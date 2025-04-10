@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from .models import Slot
 from .models import Slot, Booking
 from django.contrib import messages
+from django.db.models import DateField
+from django.db.models.functions import TruncDate
+from .models import Booking
 
 def modify_slots(request):
     slots = Slot.objects.all()  # Fetch all slots from the database
@@ -47,3 +50,20 @@ def book_slot(request):
         return render(request, "parking_app/book_slot.html", {"slots": slots})
 
     return render(request, "parking_app/book_slot.html", {"slots": slots})
+
+def view_bookings(request):
+    # Group bookings by date
+    bookings_by_date = (
+        Booking.objects.annotate(date=TruncDate('booking_time'))
+        .values('date')
+        .order_by('-date')
+        .distinct()
+    )
+
+    # Fetch all bookings for each date
+    bookings = {}
+    for entry in bookings_by_date:
+        date = entry['date']
+        bookings[date] = Booking.objects.filter(booking_time__date=date)
+
+    return render(request, "parking_app/view_bookings.html", {"bookings": bookings})
