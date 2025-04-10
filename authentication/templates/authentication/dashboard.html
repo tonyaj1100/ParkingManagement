@@ -24,6 +24,9 @@
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'modify_slots' %}active-link{% endif %}" href="{% url 'modify_slots' %}">Modify Slots</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'book_slot' %}active-link{% endif %}" href="{% url 'book_slot' %}">Book Slot</a>
+                        </li>
                     {% endif %}
                 </ul>
                 {% if user.is_authenticated %}
@@ -47,6 +50,9 @@
         <h2 class="text-center my-4">Welcome to Parking Management System Dashboard</h2>
         <div class="text-center mt-4">
             <a href="{% url 'modify_slots' %}" class="btn btn-primary">Modify Slots</a>
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'book_slot' %}" class="btn btn-success">Book Slot</a>
         </div>
     </div>
 </body>
